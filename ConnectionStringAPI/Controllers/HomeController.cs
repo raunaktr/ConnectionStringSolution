@@ -2,6 +2,7 @@
 using ConnectionStringDAL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,12 @@ namespace ConnectionStringAPI.Controllers
     public class HomeController : ControllerBase
     {
         public ConnectionStringRepository repos;
-        public HomeController()
+        private readonly IConfiguration configuration;
+        public HomeController(IConfiguration i)
         {
-            repos = new ConnectionStringRepository();
+            configuration = i;
+
+            repos = new ConnectionStringRepository(configuration);
         }
 
         public List<Course> GetCourses()

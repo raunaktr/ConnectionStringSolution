@@ -1,7 +1,9 @@
 ﻿using ConnectionStringDAL.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Protocols;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -14,19 +16,23 @@ namespace ConnectionStringDAL
         private SqlConnection conObj;
         private SqlCommand cmdObj;
 
-        public ConnectionStringRepository()
+        public ConnectionStringRepository(IConfiguration config)
         {
-            conObj = new SqlConnection(GetConnectionString());
+            conObj = new SqlConnection(config.GetConnectionString("DBConnectionString"));
         }
-        public string GetConnectionString()
-        {
-            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
-            var config = builder.Build();
-            var connectionString = config.GetConnectionString("DBConnectionString");
 
-            return connectionString;
+        // public string GetConnectionString()
+        //{
+            // var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
+            //var config = builder.Build();
+            //var connectionString = config.GetConnectionString("DBConnectionString");
 
-        }
+            //return connectionString;
+            //string connectionString = ConfigurationManager.ConnectionStrings["DB"].ConnectionString;
+
+            //return connectionString;
+        //}
+
         public List<Course> GetCourseDetails()
         {
             List<Course> courseLst = new List<Course>();
